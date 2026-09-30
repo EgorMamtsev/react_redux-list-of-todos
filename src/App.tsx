@@ -6,11 +6,13 @@ import { getTodos } from './api';
 
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { setTodos } from './features/todos';
+import { setCurrentTodo } from './features/currentTodo';
 
 export const App = () => {
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
   const { query, status } = useAppSelector(state => state.filter);
+  const selectedTodo = useAppSelector(state => state.currentTodo);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -53,7 +55,12 @@ export const App = () => {
         </div>
       </div>
 
-      <TodoModal />
+      {selectedTodo && (
+        <TodoModal
+          todo={selectedTodo}
+          onClose={() => dispatch(setCurrentTodo(null))}
+        />
+      )}
     </>
   );
 };
